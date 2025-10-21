@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Input Data Penyediaan Air Bersih</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <style>
+        /* =================================
+           1. PENGATURAN DASAR & FONT
+           ================================= */
+        html, body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #ffffff;
+        }
+
+        /* =================================
+           2. LAYOUT UTAMA (HEADER & WRAPPER)
+           ================================= */
+        .header {
+            width: 100%;
+            background-color: #312E5C;
+            padding: 15px 30px;
+            display: flex;
+            align-items: center;
+            box-sizing: border-box;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .header img {
+            height: 45px;
+        }
+
+        .page-wrapper {
+            display: flex;
+        }
+
+        /* =================================
+           3. SIDEBAR NAVIGASI (KODE STANDAR)
+           ================================= */
+        .sidebar {
+            width: 260px;
+            background-color: #312E5C;
+            color: white;
+            min-height: calc(100vh - 75px);
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .sidebar h2 {
+            text-align: center;
+            border-bottom: 1px solid #6a62a7;
+            padding-bottom: 15px;
+            margin-top: 0;
+            font-size: 1.2em;
+            letter-spacing: 1px;
+        }
+
+        .sidebar ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .sidebar ul li a {
+            display: flex;
+            align-items: center;
+            color: #e0e0e0;
+            text-decoration: none;
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin-bottom: 5px;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .sidebar ul li a i {
+            margin-right: 15px;
+            width: 20px;
+            text-align: center;
+        }
+
+        .sidebar ul li a:hover {
+            background-color: #4B447A;
+            color: #ffffff;
+        }
+
+        .sidebar ul li a.active {
+            background-color: #6a62a7;
+            color: #ffffff;
+            font-weight: bold;
+        }
+
+        /* =================================
+           4. KONTEN UTAMA & FORMULIR
+           ================================= */
+        .main-content {
+            flex: 1;
+            padding: 40px;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .main-title {
+            color: #312E5C;
+            text-align: center;
+            margin-top: 0;
+            margin-bottom: 30px;
+            font-size: 2em;
+            font-weight: 700;
+            line-height: 1.2;
+        }
+
+        .form-container {
+            background-color: #f8f877;
+            padding: 40px;
+            border-radius: 12px;
+            width: 100%;
+            max-width: 500px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            box-sizing: border-box;
+        }
+        
+        .input-group {
+            margin-bottom: 25px;
+        }
+        
+        .input-group label {
+            display: block;
+            font-weight: 600;
+            color: #412929;
+            margin-bottom: 8px;
+        }
+
+        .input-field {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            background-color: #d4ffff;
+            font-size: 16px;
+            color: #333;
+            box-sizing: border-box;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+        }
+
+        select.input-field {
+            background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%232c3e50%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.4-12.8z%22%2F%3E%3C%2Fsvg%3E');
+            background-repeat: no-repeat;
+            background-position: right 15px center;
+            background-size: 12px;
+        }
+        
+        .submit-button {
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 10px;
+            background-color: #312E5C;
+            color: #f8f877;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+        
+        .submit-button:hover {
+            background-color: #4B447A;
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <img src="bbkksby.png" alt="Logo Kemenkes">
+    </div>
+
+    <div class="page-wrapper">
+        <nav class="sidebar">
+            <h2>SANITASI <br> LINGKUNGAN</h2>
+            <ul>
+                <li>
+                    <a href="dashboard.html">
+                        <i class="fas fa-chart-pie"></i> Dashboard
+                    </a>
+                </li>
+                <li>
+                    <a href="dashboard-ttu.html">
+                        <i class="fas fa-school"></i> Tempat Fasilitas Umum
+                    </a>
+                </li>
+                <li>
+                    <a href="dashboard_air.html">
+                        <i class="fas fa-tint"></i> Penyediaan Air Bersih
+                    </a>
+                </li>
+                <li>
+                    <a href="dashboard-tpp.html">
+                        <i class="fas fa-utensils"></i> Pengelolaan Pangan
+                    </a>
+                </li>
+                <li>
+                    <a href="dashboard-sertifikat.html">
+                        <i class="fas fa-file-alt"></i> Penerbitan Sertifikat
+                    </a>
+                </li>
+                <li>
+                    <a href="logout.html">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </a>
+                </li>
+            </ul>
+        </nav>
+        <main class="main-content">
+            <h1 class="main-title">
+                INPUT DATA<br>PENYEDIAAN AIR BERSIH
+            </h1>
+
+            <div class="form-container">
+                <form action="#">
+                    <div class="input-group">
+                        <label for="wilayah">Pilih Wilayah Kerja</label>
+                        <select id="wilayah" name="wilayah" class="input-field">
+                            <option value="Bandara Internasional Juanda Surabaya">Bandara Internasional Juanda Surabaya</option>
+                            <option value="Pelabuhan Tanjung Perak">Pelabuhan Tanjung Perak</option>
+                            <option value="Pelabuhan Tuban">Pelabuhan Tuban</option>
+                            <option value="Pelabuhan Gresik">Pelabuhan Gresik</option>
+                            <option value="Pelabuhan Kalianget">Pelabuhan Kalianget</option>
+                            <option value="Bandara Dhoho">Bandara Dhoho</option>
+                        </select>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="tanggal">Pilih Tanggal Input</label>
+                        <input type="date" id="tanggal" name="tanggal" class="input-field">
+                    </div>
+
+                    <button type="button" class="submit-button">LANJUTKAN</button>
+                </form>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        document.querySelector('.submit-button').addEventListener('click', function() {
+            const wilayah = document.getElementById('wilayah').value;
+            const tanggal = document.getElementById('tanggal').value;
+
+            if (!tanggal) {
+                alert('Silakan pilih tanggal terlebih dahulu.');
+                return; 
+            }
+
+            const halamanTujuan = 'form-penyediaan-air-bersih.html';
+            
+            const urlDenganData = `${halamanTujuan}?wilayah=${encodeURIComponent(wilayah)}&tanggal=${tanggal}`;
+            
+            window.location.href = urlDenganData;
+        });
+    </script>
+</body>
+</html>

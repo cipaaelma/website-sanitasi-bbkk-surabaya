@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Dashboard Sanitasi Lingkungan</title>
+
+  <!-- Icon & Chart.js -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <style>
+    /* --- Layout & Theme (clean, responsive) --- */
+    :root{
+      --bg:#f4f7f6;
+      --accent:#312E5C;
+      --accent-2:#6a62a7;
+      --card:#ffffff;
+      --muted:#6b6b6b;
+      --kpi-bg:#fff8d6;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;
+      font-family:Inter,Segoe UI,Roboto,Arial,sans-serif;
+      background:var(--bg);
+      color:#222}
+    .header{background:var(--accent);
+      color:#fff;
+      padding:14px 24px;
+      display:flex;
+      align-items:center;
+      gap:12px;
+      position:sticky;
+      top:0;
+      z-index:50}
+    .header img{height:44px}
+    .header h1{margin:0;
+      font-size:1.2rem;
+      font-weight:700}
+    .page-wrapper{display:flex;
+      min-height:calc(100vh - 72px)}
+    /* sidebar */
+          /* =================================
+           3. SIDEBAR NAVIGASI (STANDAR)
+           ================================= */
+        .sidebar {
+            width: 260px;
+            background-color: #312E5C;
+            color: white;
+            min-height: calc(100vh - 75px);
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        .sidebar h2 {
+            text-align: center;
+            border-bottom: 1px solid #6a62a7;
+            padding-bottom: 15px;
+            margin-top: 0;
+            font-size: 1.2em;
+        }
+        .sidebar ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+        .sidebar ul li a {
+            display: flex;
+            align-items: center;
+            color: #e0e0e0;
+            text-decoration: none;
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin-bottom: 5px;
+            transition: background-color 0.3s;
+        }
+        .sidebar ul li a i {
+            margin-right: 15px;
+            width: 20px;
+            text-align: center;
+        }
+        .sidebar ul li a:hover {
+            background-color: #4B447A;
+        }
+        .sidebar ul li a.active {
+            background-color: #6a62a7;
+            font-weight: bold;
+        }
+    .main{flex:1;padding:22px}
+    .main-title{text-align:center;color:var(--accent);font-size:1.6rem;margin:6px 0 18px 0}
+    /* filter */
+    .filter-section{display:flex;flex-wrap:wrap;gap:12px;align-items:end;background:var(--card);padding:16px;border-radius:12px;box-shadow:0 6px 18px rgba(0,0,0,0.06);margin-bottom:18px}
+    .filter-group{min-width:160px;flex:1}
+    label{display:block;font-weight:600;margin-bottom:6px;color:var(--muted);font-size:0.9rem}
+    select,input[type=date]{width:100%;padding:10px;border-radius:8px;border:1px solid #dfe6ea;background:#f7fbff}
+    .btn{padding:10px 16px;border-radius:8px;border:none;background:var(--accent);color:#f8f877;font-weight:700;cursor:pointer}
+    .btn.secondary{background:#6a62a7}
+    /* KPI */
+    .kpi-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;margin-bottom:18px}
+    .kpi{background:var(--card);padding:14px;border-radius:12px;box-shadow:0 6px 18px rgba(0,0,0,0.06);cursor:pointer;display:flex;flex-direction:column;align-items:flex-start;gap:6px}
+    .kpi .title{font-size:0.95rem;color:var(--muted)}
+    .kpi .value{font-size:1.6rem;color:var(--accent);font-weight:800}
+    .kpi .sub{font-size:0.85rem;color:#777}
+    /* charts */
+    .chart-section{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:18px}
+    .chart-card{background:var(--card);padding:12px;border-radius:12px;box-shadow:0 6px 18px rgba(0,0,0,0.06);min-height:220px}
+    .chart-card h3{margin:0 0 8px 0;color:var(--accent);font-size:1rem}
+    .chart-canvas{position:relative;height:220px}
+    /* full width chart */
+    .chart-full{grid-column:1/-1}
+    /* table */
+    .table-card{background:var(--card);padding:12px;border-radius:12px;box-shadow:0 6px 18px rgba(0,0,0,0.06)}
+    table{width:100%;border-collapse:collapse}
+    th,td{padding:10px;border-bottom:1px solid #eef2f3;text-align:left;font-size:0.9rem}
+    th{background:#f7f9fa;color:#555;font-weight:700}
+    tr:hover td{background:#fbfdff}
+    .small-muted{font-size:0.85rem;color:#666}
+    /* responsive */
+    @media (max-width:900px){
+      .chart-section{grid-template-columns:1fr}
+      .filter-section{flex-direction:column;align-items:stretch}
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <img src="bbkksby.png" alt="logo">
+  </div>
+
+    <div class="page-wrapper">
+        <nav class="sidebar">
+            <h2>SANITASI <br> LINGKUNGAN</h2>
+            <ul>
+                <li>
+                    <a href="dashboard.html">
+                        <i class="fas fa-chart-pie"></i> Dashboard
+                    </a>
+                </li>
+                <li>
+                    <a href="dashboard-ttu.html">
+                        <i class="fas fa-school"></i> Tempat Fasilitas Umum
+                    </a>
+                </li>
+                <li>
+                    <a href="dashboard_air.html">
+                        <i class="fas fa-tint"></i> Penyediaan Air Bersih
+                    </a>
+                </li>
+                <li>
+                    <a href="dashboard-tpp.html">
+                        <i class="fas fa-utensils"></i> Pengelolaan Pangan
+                    </a>
+                </li>
+                <li>
+                    <a href="dashboard-sertifikat.html">
+                        <i class="fas fa-file-alt"></i> Penerbitan Sertifikat
+                    </a>
+                </li>
+                <li>
+                    <a href="logout.html">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
+    <main class="main">
+      <h2 class="main-title">DASHBOARD SANITASI LINGKUNGAN</h2>
+
+      <!-- FILTER GLOBAL -->
+      <section class="filter-section" aria-label="Filter Global">
+        <div class="filter-group">
+          <label for="start_date">Dari Tanggal</label>
+          <input type="date" id="start_date">
+        </div>
+        <div class="filter-group">
+          <label for="end_date">Hingga Tanggal</label>
+          <input type="date" id="end_date">
+        </div>
+        <div class="filter-group">
+          <label for="wilayah_kerja">Wilayah Kerja</label>
+          <select id="wilayah_kerja">
+            <option value="">Semua Wilayah</option>
+            <option>Bandara Internasional Juanda Surabaya</option>
+            <option>Asrama Haji Sukolilo Surabaya</option>
+            <option>Pelabuhan Tanjung Perak</option>
+            <option>Pelabuhan Gresik</option>
+            <option>Pelabuhan Tuban</option>
+            <option>Pelabuhan Kalianget</option>
+          </select>
+        </div>
+
+        <div style="display:flex;gap:8px;">
+          <button class="btn" id="applyFiltersBtn">Terapkan Filter</button>
+          <button class="btn secondary" id="resetFiltersBtn" title="Reset filter">Reset</button>
+        </div>
+      </section>
+
+      <!-- KPI CARDS -->
+      <section class="kpi-cards">
+        <div class="kpi" id="kpi-total" title="Klik untuk detail semua kategori">
+          <div class="title">Total Survey (Semua Kategori)</div>
+          <div class="value" id="kpi-total-value">0</div>
+          <div class="sub small-muted">Total inspeksi yang tercatat</div>
+        </div>
+
+        <div class="kpi" id="kpi-tpp" title="Klik untuk dashboard TPP">
+          <div class="title">Total Inspeksi TPP</div>
+          <div class="value" id="kpi-tpp-value">0</div>
+          <div class="sub small-muted">Jumlah pemeriksaan TPP</div>
+        </div>
+
+        <div class="kpi" id="kpi-air" title="Klik untuk dashboard Air Bersih">
+          <div class="title">Total Pemeriksaan Air Bersih</div>
+          <div class="value" id="kpi-air-value">0</div>
+          <div class="sub small-muted">Jumlah titik sampling</div>
+        </div>
+
+        <div class="kpi" id="kpi-ttu" title="Klik untuk dashboard TTU">
+          <div class="title">Total Pemeriksaan TFU</div>
+          <div class="value" id="kpi-ttu-value">0</div>
+          <div class="sub small-muted">Jumlah TFU diperiksa</div>
+        </div>
+
+        <div class="kpi" id="kpi-sertifikat" title="Klik untuk daftar sertifikat">
+          <div class="title">Total Sertifikat Diterbitkan</div>
+          <div class="value" id="kpi-sertifikat-value">0</div>
+          <div class="sub small-muted">SLHS, Penjamah, Air</div>
+        </div>
+      </section>
+
+      <!-- CHARTS -->
+      <section class="chart-section">
+        <div class="chart-card">
+          <h3>Distribusi Status Hasil (MS vs TMS)</h3>
+          <div class="chart-canvas">
+            <canvas id="statusPieChart"></canvas>
+          </div>
+        </div>
+
+        <div class="chart-card">
+          <h3>Jumlah Inspeksi per Wilayah Kerja</h3>
+          <div class="chart-canvas">
+            <canvas id="wilayahBarChart"></canvas>
+          </div>
+        </div>
+
+        <div class="chart-card chart-full">
+          <h3>Tren Bulanan Inspeksi & Pemeriksaan</h3>
+          <div class="chart-canvas">
+            <canvas id="monthlyLineChart"></canvas>
+          </div>
+        </div>
+      </section>
+
+      <!-- TABLE RECENT INPUTS -->
+      <section class="table-card">
+        <h3 style="margin:0 0 10px 0;color:var(--accent)">Data Terbaru</h3>
+        <div class="small-muted" style="margin:6px 0 12px 0">Tabel berisi entri terbaru; klik baris untuk drill-down ke halaman detail.</div>
+        <div style="overflow:auto">
+          <table id="recent-table">
+            <thead>
+              <tr>
+                <th>Kategori</th>
+                <th>Nama / Lokasi</th>
+                <th>Wilayah</th>
+                <th>Hasil</th>
+                <th>Tanggal</th>
+                <th>Rekomendasi</th>
+              </tr>
+            </thead>
+            <tbody id="recent-table-body">
+              <tr><td colspan="6" style="text-align:center;padding:18px">Memuat data...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <script>
+    // ---------- Global chart variables ----------
+    let statusPieChart, wilayahBarChart, monthlyLineChart;
+
+    // Set default dates to current month
+    document.addEventListener('DOMContentLoaded', () => {
+      const today = new Date();
+      const firstDay = new Date(today.getFullYear(), today.getMonth(), 1).toISOString().split('T')[0];
+      const lastDay = new Date(today.getFullYear(), today.getMonth()+1, 0).toISOString().split('T')[0];
+      document.getElementById('start_date').value = firstDay;
+      document.getElementById('end_date').value = lastDay;
+
+      initCharts();
+      attachHandlers();
+      fetchDashboardData();
+    });
+
+    // ---------- Initialize Chart.js charts ----------
+    function initCharts(){
+      // PIE MS/TMS
+      const pieCtx = document.getElementById('statusPieChart').getContext('2d');
+      statusPieChart = new Chart(pieCtx, {
+        type:'pie',
+        data:{
+          labels:['Memenuhi Syarat (MS)','Tidak Memenuhi (TMS)'],
+          datasets:[{
+            data:[0,0],
+            backgroundColor:['#4CAF50','#FF6384'],
+            hoverOffset:6
+          }]
+        },
+        options:{responsive:true,maintainAspectRatio:false}
+      });
+
+
+      // BAR wilayah
+      const barCtx = document.getElementById('wilayahBarChart').getContext('2d');
+      wilayahBarChart = new Chart(barCtx, {
+        type:'bar',
+        data:{labels:[], datasets:[{label:'Jumlah Inspeksi/Sampling', data:[], backgroundColor:'#6a62a7'}]},
+        options:{
+          responsive:true,maintainAspectRatio:false,
+          onClick: (evt, elems) => {
+            if (elems.length) {
+              const idx = elems[0].index;
+              const label = wilayahBarChart.data.labels[idx];
+              // drilldown: filter by selected wilayah
+              document.getElementById('wilayah_kerja').value = label;
+              fetchDashboardData();
+            }
+          },
+          plugins:{legend:{display:false}},
+          scales:{y:{beginAtZero:true,ticks:{precision:0}}}
+        }
+      });
+
+      // LINE monthly trend
+      const lineCtx = document.getElementById('monthlyLineChart').getContext('2d');
+      monthlyLineChart = new Chart(lineCtx, {
+        type:'line',
+        data:{
+          labels:[],
+          datasets:[
+            {label:'Inspeksi TPP', data:[], borderColor:'#36A2EB', backgroundColor:'rgba(54,162,235,0.15)', fill:true, tension:0.35},
+            {label:'Pemeriksaan Air Bersih', data:[], borderColor:'#FFCE56', backgroundColor:'rgba(255,206,86,0.12)', fill:true, tension:0.35},
+            {label:'Pemeriksaan TFU', data:[], borderColor:'#4BC0C0', backgroundColor:'rgba(75,192,192,0.12)', fill:true, tension:0.35}
+          ]
+        },
+        options:{responsive:true,maintainAspectRatio:false,scales:{y:{beginAtZero:true,ticks:{precision:0}}}}
+      });
+    }
+
+    // ---------- Event handlers ----------
+    function attachHandlers(){
+      document.getElementById('applyFiltersBtn').addEventListener('click', fetchDashboardData);
+      document.getElementById('resetFiltersBtn').addEventListener('click', () => {
+        document.getElementById('wilayah_kerja').value = '';
+        //document.getElementById('jenis_data').value = 'all';
+        const today = new Date();
+        const firstDay = new Date(today.getFullYear(), today.getMonth(), 1).toISOString().split('T')[0];
+        const lastDay = new Date(today.getFullYear(), today.getMonth()+1, 0).toISOString().split('T')[0];
+        document.getElementById('start_date').value = firstDay;
+        document.getElementById('end_date').value = lastDay;
+        fetchDashboardData();
+      });
+
+      // KPI click drilldown
+      document.getElementById('kpi-tpp').addEventListener('click', () => gotoLanding('tpp'));
+      document.getElementById('kpi-air').addEventListener('click', () => gotoLanding('air_bersih'));
+      document.getElementById('kpi-ttu').addEventListener('click', () => gotoLanding('ttu'));
+      document.getElementById('kpi-sertifikat').addEventListener('click', () => gotoLanding('sertifikat'));
+      document.getElementById('kpi-total').addEventListener('click', () => gotoLanding('all'));
+    }
+
+    // helper to open landing pages with current filters
+    function gotoLanding(category, extraParams = {}){
+      const start = document.getElementById('start_date').value;
+      const end = document.getElementById('end_date').value;
+      const wilayah = document.getElementById('wilayah_kerja').value || '';
+      let url = 'dashboard.html'; // default fallback
+
+      if (category === 'tpp') url = 'landing-tpp.html';
+      else if (category === 'air_bersih') url = 'landing-air.html';
+      else if (category === 'ttu') url = 'landing-ttu.html';
+      else if (category === 'sertifikat') url = 'landing-sertif.html'; // ✅ ubahan di sini
+      else if (category === 'all') url = 'dashboard.html';
+
+      const params = new URLSearchParams();
+      if (start) params.set('start_date', start);
+      if (end) params.set('end_date', end);
+      if (wilayah) params.set('wilayah', wilayah);
+      if (category && category !== 'all') params.set('jenis', category);
+      for (const k in extraParams) params.set(k, extraParams[k]);
+
+      window.location.href = `${url}?${params.toString()}`;
+    }
+
+    // ---------- Fetch data from backend ----------
+    async function fetchDashboardData(){
+      const start = document.getElementById('start_date').value;
+      const end = document.getElementById('end_date').value;
+      const wilayah = document.getElementById('wilayah_kerja').value;
+
+      const params = new URLSearchParams({ start_date: start, end_date: end, wilayah_kerja: wilayah });
+
+      try {
+        const res = await fetch(`get_dashboard_data.php?${params.toString()}`);
+        if (!res.ok) throw new Error('Response not OK');
+        const data = await res.json();
+
+        // Expected structure in response:
+        // {
+        //  kpi: { total_surveys, total_tpp, total_air, total_ttu, total_sertifikat },
+        //  status_dist: { ms_count, tms_count },
+        //  wilayah_dist: [ { wilayah_kerja, count }, ... ],
+        //  monthly_trend: [ { month:1, year:2025, category:'tpp', count:10 }, ... ],
+        //  recent_entries: [ {category, name, wilayah, result, date, recommendation, detail_url}, ... ]
+        // }
+
+        updateKPI(data.kpi || {});
+        updateStatusPie(data.status_dist || {ms_count:0,tms_count:0});
+        updateWilayahBar(data.wilayah_dist || []);
+        updateMonthlyTrend(data.monthly_trend || []);
+        updateRecentTable(data.recent_entries || []);
+
+      } catch (err) {
+        console.error('Gagal memuat data dashboard:', err);
+        document.getElementById('recent-table-body').innerHTML = '<tr><td colspan="6" style="text-align:center;color:red;padding:14px">Gagal memuat data. Periksa koneksi backend.</td></tr>';
+      }
+    }
+
+    // ---------- Update UI functions ----------
+    function updateKPI(kpi){
+      document.getElementById('kpi-total-value').textContent = kpi.total_surveys ?? 0;
+      document.getElementById('kpi-tpp-value').textContent = kpi.total_tpp ?? 0;
+      document.getElementById('kpi-air-value').textContent = kpi.total_air ?? 0;
+      document.getElementById('kpi-ttu-value').textContent = kpi.total_ttu ?? 0;
+      document.getElementById('kpi-sertifikat-value').textContent = kpi.total_sertifikat ?? 0;
+    }
+
+    function updateStatusPie(dist){
+      statusPieChart.data.datasets[0].data = [
+        dist.ms_count ?? 0,
+        dist.tms_count ?? 0
+      ];
+      statusPieChart.update();
+    }
+
+    function updateWilayahBar(list){
+      const labels = list.map(i => i.wilayah_kerja);
+      const data = list.map(i => i.count);
+      wilayahBarChart.data.labels = labels;
+      wilayahBarChart.data.datasets[0].data = data;
+      wilayahBarChart.update();
+    }
+
+    function updateMonthlyTrend(rows){
+      // rows: array of {month, year, category, count}
+      const keys = new Set();
+      const tpp = {}, air = {}, ttu = {};
+      rows.forEach(r => {
+        const k = `${String(r.month).padStart(2,'0')}/${r.year}`;
+        keys.add(k);
+        if(r.category === 'tpp') tpp[k] = (tpp[k]||0) + Number(r.count);
+        if(r.category === 'air_bersih') air[k] = (air[k]||0) + Number(r.count);
+        if(r.category === 'ttu') ttu[k] = (ttu[k]||0) + Number(r.count);
+      });
+
+      // ensure chronological order
+      const sorted = Array.from(keys).sort((a,b) => {
+        const [mA,yA] = a.split('/').map(Number);
+        const [mB,yB] = b.split('/').map(Number);
+        return (yA*12+mA) - (yB*12+mB);
+      });
+
+      monthlyLineChart.data.labels = sorted;
+      monthlyLineChart.data.datasets[0].data = sorted.map(k => tpp[k]||0);
+      monthlyLineChart.data.datasets[1].data = sorted.map(k => air[k]||0);
+      monthlyLineChart.data.datasets[2].data = sorted.map(k => ttu[k]||0);
+      monthlyLineChart.update();
+    }
+
+    function updateRecentTable(entries){
+      const tbody = document.getElementById('recent-table-body');
+      tbody.innerHTML = '';
+      if(!entries.length){
+        tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:18px">Tidak ada data terbaru.</td></tr>';
+        return;
+      }
+      entries.forEach(e => {
+        const tr = document.createElement('tr');
+        // clicking row -> navigate to relevant landing/detail with params
+        tr.style.cursor = 'pointer';
+        tr.addEventListener('click', () => {
+          // Construct drilldown url; prefer provided detail_url if exists
+          if (e.detail_url){
+            window.location.href = e.detail_url;
+            return;
+          }
+          // else go to landing page with filters
+          let landing = 'dashboard.html';
+          if (e.category === 'tpp') landing = 'landing-tpp.html';
+          if (e.category === 'air_bersih') landing = 'landing-air.html';
+          if (e.category === 'ttu') landing = 'landing-ttu.html';
+          const params = new URLSearchParams();
+          if (e.wilayah) params.set('wilayah', e.wilayah);
+          if (e.date) params.set('date', e.date);
+          window.location.href = `${landing}?${params.toString()}`;
+        });
+
+        const nameOrLoc = e.name || e.location || '-';
+        tr.innerHTML = `
+          <td>${escapeHtml(e.category || '-')}</td>
+          <td>${escapeHtml(nameOrLoc)}</td>
+          <td>${escapeHtml(e.wilayah || '-')}</td>
+          <td>${escapeHtml(e.result || '-')}</td>
+          <td>${escapeHtml(e.date || '-')}</td>
+          <td>${escapeHtml(e.recommendation || '-')}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    // small helper to avoid XSS if backend returns raw HTML
+    function escapeHtml(s){ if (!s && s !== 0) return ''; return String(s).replace(/[&<>"']/g, (m)=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
+
+  </script>
+</body>
+</html>

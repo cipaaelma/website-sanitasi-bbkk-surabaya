@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Dashboard Penerbitan Sertifikat</title>
+
+  <!-- Icon & Chart.js -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <style>
+    :root{
+      --bg:#f4f7f6;
+      --accent:#312E5C;
+      --accent-2:#6a62a7;
+      --card:#ffffff;
+      --muted:#6b6b6b;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;font-family:Inter,Segoe UI,Roboto,Arial,sans-serif;background:var(--bg);color:#222}
+    .header{background:var(--accent);color:#fff;padding:14px 24px;display:flex;align-items:center;justify-content:space-between;}
+    .header img{height:45px}
+    .header a{background:#6a62a7;color:white;padding:8px 14px;border-radius:6px;
+              text-decoration:none;font-weight:600;display:inline-block;}
+    .page-wrapper{display:flex;min-height:calc(100vh - 72px)}
+
+    /* sidebar */
+    .sidebar {
+        width: 260px;
+        background-color: #312E5C;
+        color: white;
+        min-height: calc(100vh - 75px);
+        padding: 20px;
+        box-sizing: border-box;
+    }
+    .sidebar h2 {text-align:center;border-bottom:1px solid #6a62a7;padding-bottom:15px;margin-top:0;font-size:1.2em;}
+    .sidebar ul {list-style-type:none;padding:0;margin:0;}
+    .sidebar ul li a {display:flex;align-items:center;color:#e0e0e0;text-decoration:none;padding:15px 20px;border-radius:8px;margin-bottom:5px;transition:background-color 0.3s;}
+    .sidebar ul li a i {margin-right:15px;width:20px;text-align:center;}
+    .sidebar ul li a:hover {background-color:#4B447A;}
+    .sidebar ul li a.active {background-color:#6a62a7;font-weight:bold;}
+
+    .main{flex:1;padding:22px}
+    .main-title{text-align:center;color:var(--accent);font-size:1.6rem;margin:6px 0 18px 0}
+
+    /* filter */
+    .filter-section{display:flex;flex-wrap:wrap;gap:12px;align-items:end;background:var(--card);padding:16px;border-radius:12px;box-shadow:0 6px 18px rgba(0,0,0,0.06);margin-bottom:18px}
+    .filter-group{min-width:160px;flex:1}
+    label{display:block;font-weight:600;margin-bottom:6px;color:var(--muted);font-size:0.9rem}
+    select,input[type=date]{width:100%;padding:10px;border-radius:8px;border:1px solid #dfe6ea;background:#f7fbff}
+    .btn{padding:10px 16px;border-radius:8px;border:none;background:var(--accent);color:#fff;font-weight:700;cursor:pointer}
+    .btn.secondary{background:#6a62a7}
+
+    /* KPI */
+    .kpi-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;margin-bottom:18px}
+    .kpi{background:var(--card);padding:14px;border-radius:12px;box-shadow:0 6px 18px rgba(0,0,0,0.06);display:flex;flex-direction:column;gap:6px}
+    .kpi .title{font-size:0.95rem;color:var(--muted)}
+    .kpi .value{font-size:1.6rem;color:var(--accent);font-weight:800}
+
+    /* charts */
+    .chart-section{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:18px}
+    .chart-card{background:var(--card);padding:12px;border-radius:12px;box-shadow:0 6px 18px rgba(0,0,0,0.06);min-height:220px}
+    .chart-card h3{margin:0 0 8px 0;color:var(--accent);font-size:1rem}
+    .chart-canvas{position:relative;height:220px}
+    .chart-full{grid-column:1/-1}
+
+    /* tables container */
+    .tables-grid {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        margin-bottom: 18px;
+        }
+
+    .table-card{background:var(--card);padding:12px;border-radius:12px;box-shadow:0 6px 18px rgba(0,0,0,0.06)}
+    table{width:100%;border-collapse:collapse}
+    th,td{padding:8px;border-bottom:1px solid #eef2f3;text-align:left;font-size:0.85rem}
+    th{background:#f7f9fa;color:#555;font-weight:700}
+    tr:hover td{background:#fbfdff}
+    .table-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+    .small-btn{padding:6px 10px;border-radius:8px;border:none;background:var(--accent);color:#fff;font-weight:700;cursor:pointer;font-size:0.85rem}
+
+    /* responsive tweaks */
+    @media (max-width:900px){
+      .chart-section{grid-template-columns:1fr}
+      .page-wrapper{flex-direction:column}
+      .sidebar{width:100%;min-height:auto}
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <div class="header">
+    <img src="bbkksby.png" alt="logo">
+    <a href="landing-sertif.html">+ Input Data</a>
+  </div>
+
+    <div class="page-wrapper">
+        <nav class="sidebar">
+            <h2>SANITASI <br> LINGKUNGAN</h2>
+            <ul>
+                <li>
+                    <a href="dashboard.html">
+                        <i class="fas fa-chart-pie"></i> Dashboard
+                    </a>
+                </li>
+                <li>
+                    <a href="dashboard-ttu.html">
+                        <i class="fas fa-school"></i> Tempat Fasilitas Umum
+                    </a>
+                </li>
+                <li>
+                    <a href="dashboard_air.html">
+                        <i class="fas fa-tint"></i> Penyediaan Air Bersih
+                    </a>
+                </li>
+                <li>
+                    <a href="dashboard-tpp.html">
+                        <i class="fas fa-utensils"></i> Pengelolaan Pangan
+                    </a>
+                </li>
+                <li>
+                    <a href="dashboard-sertifikat.html">
+                        <i class="fas fa-file-alt"></i> Penerbitan Sertifikat
+                    </a>
+                </li>
+                <li>
+                    <a href="logout.html">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
+    <main class="main">
+      <h2 class="main-title">DASHBOARD PENERBITAN SERTIFIKAT</h2>
+
+      <!-- Filter -->
+      <section class="filter-section">
+        <div class="filter-group">
+          <label for="start_date">Dari Tanggal</label>
+          <input type="date" id="start_date">
+        </div>
+        <div class="filter-group">
+          <label for="end_date">Hingga Tanggal</label>
+          <input type="date" id="end_date">
+        </div>
+        <div class="filter-group">
+          <label for="wilayah_kerja">Wilayah Kerja</label>
+          <select id="wilayah_kerja">
+            <option value="">Semua Wilayah</option>
+            <option>Bandara Internasional Juanda Surabaya</option>
+            <option>Asrama Haji Sukolilo Surabaya</option>
+            <option>Pelabuhan Tanjung Perak</option>
+            <option>Pelabuhan Gresik</option>
+            <option>Pelabuhan Tuban</option>
+            <option>Pelabuhan Kalianget</option>
+          </select>
+        </div>
+        <div style="display:flex;gap:8px;">
+          <button class="btn" id="applyFiltersBtn">Terapkan Filter</button>
+          <button class="btn secondary" id="resetFiltersBtn">Reset</button>
+        </div>
+      </section>
+
+      <!-- KPI -->
+      <section class="kpi-cards">
+        <div class="kpi"><div class="title">Total Sertifikat (Semua)</div><div class="value" id="kpi-total">0</div></div>
+        <div class="kpi"><div class="title">Sertifikat Air</div><div class="value" id="kpi-air">0</div></div>
+        <div class="kpi"><div class="title">Sertifikat SLHS</div><div class="value" id="kpi-slhs">0</div></div>
+        <div class="kpi"><div class="title">Sertifikat Penjamah</div><div class="value" id="kpi-penjamah">0</div></div>
+      </section>
+
+      <!-- Charts -->
+      <section class="chart-section">
+        <div class="chart-card">
+          <h3>Distribusi per Jenis Sertifikat</h3>
+          <div class="chart-canvas"><canvas id="pieChart"></canvas></div>
+        </div>
+        <div class="chart-card">
+          <h3>Jumlah per Wilayah</h3>
+          <div class="chart-canvas"><canvas id="barChart"></canvas></div>
+        </div>
+        <div class="chart-card chart-full">
+          <h3>Tren Bulanan (Total Sertifikat)</h3>
+          <div class="chart-canvas"><canvas id="lineChart"></canvas></div>
+        </div>
+      </section>
+
+      <!-- Three tables (5 rows terbaru masing-masing) -->
+      <section class="tables-grid">
+        <!-- Air -->
+        <div class="table-card" id="card-air">
+          <div class="table-header">
+            <h3 style="margin:0;color:var(--accent)">Sertifikat Air - 5 Data Terbaru</h3>
+            <div>
+              <button class="small-btn" id="download-air">Download Excel</button>
+            </div>
+          </div>
+          <div style="overflow:auto">
+            <table id="table-air">
+            <thead>
+                <tr>
+                <th>Wilayah Kerja</th>
+                <th>Tanggal Input</th>
+                <th>Jenis Sarana</th>
+                <th>Jumlah</th>
+                <th>Keterangan</th>
+                </tr>
+            </thead>
+            <tbody><tr><td colspan="5" style="text-align:center;padding:12px">Memuat...</td></tr></tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- SLHS -->
+        <div class="table-card" id="card-slhs">
+          <div class="table-header">
+            <h3 style="margin:0;color:var(--accent)">Sertifikat SLHS - 5 Data Terbaru</h3>
+            <div>
+              <button class="small-btn" id="download-slhs">Download Excel</button>
+            </div>
+          </div>
+          <div style="overflow:auto">
+            <table id="table-slhs">
+            <thead>
+            <tr>
+                <th>Wilayah Kerja</th>
+                <th>Tanggal Input</th>
+                <th>Nama Perusahaan/Pemilik</th>
+                <th>Alamat TPP</th>
+                <th>PB-UMKU</th>
+                <th>Nama TPP</th>
+                <th>Kategori TPP</th>
+            </tr>
+            </thead>
+            <tbody><tr><td colspan="6" style="text-align:center;padding:12px">Memuat...</td></tr></tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Penjamah -->
+        <div class="table-card" id="card-penjamah">
+          <div class="table-header">
+            <h3 style="margin:0;color:var(--accent)">Sertifikat Penjamah - 5 Data Terbaru</h3>
+            <div>
+              <button class="small-btn" id="download-penjamah">Download Excel</button>
+            </div>
+          </div>
+          <div style="overflow:auto">
+            <table id="table-penjamah">
+            <thead>
+            <tr>
+                <th>Tanggal Input</th>
+                <th>Nama Penerima</th>
+                <th>Nama Perusahaan</th>
+                <th>Alamat Perusahaan</th>
+                <th>Keterangan</th>
+            </tr>
+            </thead>
+
+            <tbody><tr><td colspan="5" style="text-align:center;padding:12px">Memuat...</td></tr></tbody>
+            </table>
+
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+    <script>
+    // Charts
+    let pieChart, barChart, lineChart;
+
+    document.addEventListener("DOMContentLoaded", () => {
+        initCharts();
+        attachHandlers();
+        fetchDashboard();
+    });
+
+    function initCharts(){
+        pieChart = new Chart(document.getElementById("pieChart"), {
+        type: 'pie',
+        data: {labels:['Air','SLHS','Penjamah'], datasets:[{data:[0,0,0]}]},
+        options:{responsive:true,maintainAspectRatio:false}
+        });
+        barChart = new Chart(document.getElementById("barChart"), {
+        type: 'bar',
+        data: {labels:[], datasets:[{label:'Jumlah', data:[]}]},
+        options:{responsive:true,maintainAspectRatio:false,scales:{y:{beginAtZero:true}}}
+        });
+        lineChart = new Chart(document.getElementById("lineChart"), {
+          type: 'line',
+          data: {
+            labels: [],
+            datasets: [
+              { label: 'Sertifikat Air', data: [], borderColor: '#FFC107', backgroundColor: 'rgba(255,193,7,0.2)', tension: 0.3, fill: true, pointRadius: 4 },
+              { label: 'Sertifikat SLHS', data: [], borderColor: '#4CAF50', backgroundColor: 'rgba(76,175,80,0.2)', tension: 0.3, fill: true, pointRadius: 4 },
+              { label: 'Sertifikat Penjamah', data: [], borderColor: '#2196F3', backgroundColor: 'rgba(33,150,243,0.2)', tension: 0.3, fill: true, pointRadius: 4 }
+            ]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+              y: {
+                beginAtZero: true,
+                title: { display: true, text: 'Jumlah Sertifikat' },
+                ticks: {
+                  // pastikan hanya angka bulat
+                  callback: function(value) {
+                    if (value % 1 === 0) return value;
+                  },
+                  stepSize: 1
+                }
+              }
+            }
+            ,
+            plugins: {
+              legend: { position: 'top' },
+              tooltip: { mode: 'index', intersect: false }
+            },
+            interaction: { mode: 'nearest', axis: 'x', intersect: false }
+          }
+        });
+      }
+
+    function attachHandlers(){
+        document.getElementById("applyFiltersBtn").addEventListener("click", fetchDashboard);
+        document.getElementById("resetFiltersBtn").addEventListener("click", () => {
+        document.getElementById("wilayah_kerja").value = '';
+        document.getElementById("start_date").value = '';
+        document.getElementById("end_date").value = '';
+        fetchDashboard();
+        });
+
+        document.getElementById("download-air").addEventListener("click", () => downloadExcel('air'));
+        document.getElementById("download-slhs").addEventListener("click", () => downloadExcel('slhs'));
+        document.getElementById("download-penjamah").addEventListener("click", () => downloadExcel('penjamah'));
+    }
+
+    function downloadExcel(type){
+      const start = document.getElementById("start_date").value;
+      const end = document.getElementById("end_date").value;
+      const wilayah = document.getElementById("wilayah_kerja").value;
+      const url = `get_sertifikat_dashboard.php?download_excel=1&type=${encodeURIComponent(type)}&start_date=${start}&end_date=${end}&wilayah=${encodeURIComponent(wilayah)}`;
+      window.location.href = url;
+    }
+
+
+    async function fetchDashboard(){
+        const start = document.getElementById("start_date").value;
+        const end   = document.getElementById("end_date").value;
+        const wilayah = document.getElementById("wilayah_kerja").value;
+        const params = new URLSearchParams({ start_date: start, end_date: end, wilayah: wilayah });
+
+        try {
+        const res = await fetch(`get_sertifikat_dashboard.php?${params.toString()}`);
+        if(!res.ok) throw new Error('HTTP ' + res.status);
+        const data = await res.json();
+
+        // KPIs
+        document.getElementById("kpi-total").textContent = (data.kpi.total ?? 0);
+        document.getElementById("kpi-air").textContent = (data.kpi.air ?? 0);
+        document.getElementById("kpi-slhs").textContent = (data.kpi.slhs ?? 0);
+        document.getElementById("kpi-penjamah").textContent = (data.kpi.penjamah ?? 0);
+
+        // Pie (per jenis)
+        pieChart.data.datasets[0].data = [data.kpi.air ?? 0, data.kpi.slhs ?? 0, data.kpi.penjamah ?? 0];
+        pieChart.update();
+
+        // Bar per wilayah
+        barChart.data.labels = (data.wilayah || []).map(i => i.wilayah_kerja);
+        barChart.data.datasets[0].data = (data.wilayah || []).map(i => i.count);
+        barChart.update();
+
+        // Line: monthly trend (total)
+        // === LINE CHART (Multi-Series per Jenis Sertifikat) ===
+        let trendData = data.trend || [];
+
+        // Urutkan berdasarkan waktu (format YYYY-MM)
+        trendData.sort((a,b) => a.label.localeCompare(b.label));
+
+        // Ubah label bulan jadi format "Jan 2025"
+        const monthNames = ["Jan","Feb","Mar","Apr","Mei","Jun","Jul","Agu","Sep","Okt","Nov","Des"];
+        const labels = trendData.map(t => {
+          const [year, month] = t.label.split("-");
+          return `${monthNames[parseInt(month)-1]} ${year}`;
+        });
+
+        // Ambil jumlah data per jenis sertifikat dari hasil PHP
+        const airData = trendData.map(t => Number(t.air || 0));
+        const slhsData = trendData.map(t => Number(t.slhs || 0));
+        const penjamahData = trendData.map(t => Number(t.penjamah || 0));
+
+        // Update chart
+        lineChart.data.labels = labels;
+        lineChart.data.datasets[0].data = airData;
+        lineChart.data.datasets[1].data = slhsData;
+        lineChart.data.datasets[2].data = penjamahData;
+        lineChart.update();
+
+
+        // Tables (5 latest per type)
+        renderTable('air', data.recent.air || []);
+        renderTable('slhs', data.recent.slhs || []);
+        renderTable('penjamah', data.recent.penjamah || []);
+
+        } catch (err) {
+        console.error("Gagal ambil data:", err);
+        alert("Gagal memuat data dashboard. Cek console atau endpoint PHP.");
+        }
+    }
+
+    function renderTable(type, rows){
+        const tbody = document.querySelector(`#table-${type} tbody`);
+        tbody.innerHTML = '';
+
+        if(!rows || rows.length === 0){
+        tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;padding:12px">Tidak ada data</td></tr>`;
+        return;
+        }
+
+        if (type === 'air') {
+        rows.forEach(r => {
+            tbody.innerHTML += `
+            <tr>
+                <td>${escapeHtml(r.wilayah_kerja)}</td>
+                <td>${escapeHtml(r.tanggal_input)}</td>
+                <td>${escapeHtml(r.jenis_sarana)}</td>
+                <td>${escapeHtml(r.jumlah)}</td>
+                <td>${escapeHtml(r.keterangan)}</td>
+            </tr>`;
+        });
+        } 
+        else if (type === 'slhs') {
+        rows.forEach(r => {
+            tbody.innerHTML += `
+            <tr>
+            <td>${escapeHtml(r.wilayah_kerja)}</td>
+            <td>${escapeHtml(r.tanggal_input)}</td>
+            <td>${escapeHtml(r.nama_perusahaan)}</td>
+            <td>${escapeHtml(r.alamat_tpp)}</td>
+            <td>${escapeHtml(r.pb_umku)}</td>
+            <td>${escapeHtml(r.nama_tpp)}</td>
+            <td>${escapeHtml(r.kategori_tpp)}</td>
+            </tr>`;
+        });
+        }
+
+        else if (type === 'penjamah') {
+        rows.forEach(r => {
+            tbody.innerHTML += `
+            <tr>
+            <td>${escapeHtml(r.wilayah_kerja)}</td>
+            <td>${escapeHtml(r.tanggal_input)}</td>
+            <td>${escapeHtml(r.nama_penerima)}</td>
+            <td>${escapeHtml(r.nama_perusahaan)}</td>
+            <td>${escapeHtml(r.alamat_perusahaan)}</td>
+            <td>${escapeHtml(r.keterangan)}</td>
+            </tr>`;
+        });
+        }
+
+    }
+
+    // Fungsi aman untuk mencegah XSS
+    function escapeHtml(s){ 
+        if(s==null) return ''; 
+        return String(s)
+        .replace(/&/g,'&amp;')
+        .replace(/</g,'&lt;')
+        .replace(/>/g,'&gt;'); 
+    }
+    </script>
+
+</body>
+</html>

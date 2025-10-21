@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulir Tempat Umum & Kualitas Lingkungan</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <style>
+        /* CSS Lengkap Anda */
+        html, body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI';
+            background-color: #ffffff;
+            color: #333;
+        }
+        .header {
+            width: 100%;
+            background-color: #312E5C;
+            padding: 15px 30px;
+            display: flex;
+            align-items: center;
+            box-sizing: border-box;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .header img {
+            height: 45px;
+        }
+        .page-wrapper {
+            display: flex;
+        }
+        .sidebar {
+            width: 260px;
+            background-color: #312E5C;
+            color: white;
+            min-height: calc(100vh - 75px);
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        .sidebar h2 {
+            text-align: center;
+            border-bottom: 1px solid #6a62a7;
+            padding-bottom: 15px;
+            margin-top: 0;
+            font-size: 1.2em;
+        }
+        .sidebar ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+        .sidebar ul li a {
+            display: flex;
+            align-items: center;
+            color: #e0e0e0;
+            text-decoration: none;
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin-bottom: 5px;
+            transition: background-color 0.3s;
+        }
+        .sidebar ul li a i {
+            margin-right: 15px;
+            width: 20px;
+            text-align: center;
+        }
+        .sidebar ul li a:hover {
+            background-color: #4B447A;
+        }
+        .sidebar ul li a.active {
+            background-color: #6a62a7;
+            font-weight: bold;
+        }
+        .main-content {
+            flex: 1;
+            padding: 40px;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .main-title {
+            color: #312E5C;
+            text-align: center;
+            margin-top: 0;
+            margin-bottom: 30px;
+            font-size: 2em;
+            font-weight: 700;
+            line-height: 1.2;
+        }
+        .form-container {
+            background-color: #f8f877;
+            padding: 40px;
+            border-radius: 12px;
+            width: 70%;
+            max-width: 800px; 
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            box-sizing: border-box;
+        }
+        .input-group {
+            margin-bottom: 25px;
+        }
+        .input-group label {
+            display: block;
+            font-weight: 600;
+            color: #412929;
+            margin-bottom: 8px;
+        }
+        .input-field, .textarea-field {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #cccccc;
+            border-radius: 8px;
+            background-color: #d4ffff;
+            font-size: 16px;
+            color: #333;
+            box-sizing: border-box;  
+            font-family: 'Segoe UI'; 
+        }
+        .hasil-section {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #c0c091;
+        }
+        .hasil-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+        }
+        .radio-group-label {
+            font-weight: 600;
+            color: #412929;
+            margin-bottom: 8px;
+        }
+        .radio-wrapper {
+            padding: 12px;
+            border-radius: 8px;
+        }
+        .radio-options {
+            display: flex;
+            gap: 20px;
+        }
+        .radio-options label {
+            font-weight: normal;
+            cursor: pointer;
+            margin: 0;
+            display: flex;
+            align-items: center;
+        }
+        .radio-options input[type="radio"] {
+            margin-right: 8px;
+        }
+        .info-header {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        .info-box {
+            background-color: #f8f877;
+            padding: 10px 25px;
+            border-radius: 10px;
+            font-weight: bold;
+            color: #312E5C;
+            font-size: 16px;
+            box-shadow: 3px 3px 8px rgba(0,0,0,0.15);
+        }
+        .submit-button {
+            width: 40%;
+            padding: 15px;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            background-color: #312E5C;
+            color: #f8f877;
+            margin-top: 30px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header"><img src="bbkksby.png" alt="Logo Kemenkes"></div>
+    <div class="page-wrapper">
+        <nav class="sidebar">
+            <h2>SANITASI <br> LINGKUNGAN</h2>
+            <ul>
+                <li>
+                    <a href="dashboard.html">
+                        <i class="fas fa-chart-pie"></i> Dashboard
+                    </a>
+                </li>
+                <li>
+                    <a href="dashboard-ttu.html">
+                        <i class="fas fa-school"></i> Tempat Fasilitas Umum
+                    </a>
+                </li>>
+                <li>
+                    <a href="dashboard_air.html">
+                        <i class="fas fa-tint"></i> Penyediaan Air Bersih
+                    </a>
+                </li>
+                <li>
+                    <a href="dashboard-tpp.html">
+                        <i class="fas fa-utensils"></i> Pengelolaan Pangan
+                    </a>
+                </li>
+                <li>
+                    <a href="dashboard-sertifikat.html">
+                        <i class="fas fa-file-alt"></i> Penerbitan Sertifikat
+                    </a>
+                </li>
+                <li>
+                    <a href="logout.html">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </a>
+                </li>
+            </ul>
+        </nav>
+        
+        <main class="main-content">
+            <h1 class="main-title">Formulir Pemeriksaan<br>Tempat Umum & Kualitas Lingkungan</h1>
+            <div class="info-header">
+                <div class="info-box" id="display-wilayah">Memuat Wilayah...</div>
+                <div class="info-box" id="display-tanggal">Memuat Tanggal...</div>
+            </div>
+            <div class="form-container">
+                <form action="simpan-tempat-umum.php" method="POST">
+                    
+                    <input type="hidden" id="hidden-wilayah" name="wilayah_kerja">
+                    <input type="hidden" id="hidden-tanggal" name="tanggal_input">
+                    <div class="input-group">
+                        <label for="lokasi">Lokasi</label>
+                        <input type="text" id="lokasi" name="lokasi" class="input-field" list="daftar-lokasi" required>
+                        <datalist id="daftar-lokasi">
+                            <option value="Area Keberangkatan Terminal T2"></option>
+                            <option value="Asrama Haji"></option>
+                            <option value="Cargo Bandara T1"></option>
+                            <option value="Cargo Bandara T2"></option>
+                            <option value="Check In Keberangkatan Terminal 2"></option>
+                            <option value="Custom T2"></option>
+                            <option value="Dermaga GSN"></option>
+                            <option value="Dermaga Jamrud Selatan"></option>
+                            <option value="Dermaga Kalimas"></option>
+                            <option value="Gedung GSN"></option>
+                            <option value="Gedung Cek In Keberangkatan Terminal 2"></option>
+                            <option value="Gedung Kedatangan 1B Terminal T1"></option>
+                            <option value="GSN"></option>
+                            <option value="Gudang 100"></option>
+                            <option value="Hotel Cordia"></option>
+                            <option value="Imigrasi T2"></option>
+                            <option value="Keberangkatan 1A"></option>
+                            <option value="Keberangkatan Terminal 1B"></option>
+                            <option value="Kedatangan Terminal 1A"></option>
+                            <option value="Kedatangan Terminal 1B"></option>
+                            <option value="Kedatangan Terminal 2"></option>
+                            <option value="Masjid Al Ikhlas T2 Bandara Internasional"></option>
+                            <option value="Masjid Asrama Haji"></option>
+                            <option value="Masjid At Taqwa T1 Bandara Juanda"></option>
+                            <option value="Masjid Pelabuhan Pelindo"></option>
+                            <option value="Mushola Anjungan Terminal 1"></option>
+                            <option value="Mushola Kedatangan Terminal 1A"></option>
+                            <option value="Mushola Kedatangan Terminal 1B"></option>
+                            <option value="Pelabuhan IMS"></option>
+                            <option value="Pelabuhan Jipe"></option>
+                            <option value="Pelabuhan Kias"></option>
+                            <option value="Pelabuhan Manyar"></option>
+                            <option value="Pelabuhan Pemkab Sumenep"></option>
+                            <option value="Pelabuhan Petro"></option>
+                            <option value="Pelabuhan Semen Gresik"></option>
+                            <option value="Pelabuhan Smelting"></option>
+                            <option value="Pelabuhan Ujung Pangkah"></option>
+                            <option value="Pelabuhan Umum Gresik"></option>
+                            <option value="Pelabuhan Umum Kalianget"></option>
+                            <option value="Pelabuhan Wilmar"></option>
+                            <option value="Pengambilan Bagasi Terminal 1B"></option>
+                            <option value="Poliklinik Terminal 1"></option>
+                            <option value="Poliklinik Terminal 2"></option>
+                            <option value="Ruang Karantina T2"></option>
+                            <option value="Selasar Kedatangan Terminal 1A"></option>
+                            <option value="Selasar Kedatangan Terminal 1B"></option>
+                            <option value="Selasar Kedatangan Terminal 2"></option>
+                            <option value="Selasar Keberangkatan Terminal 1B"></option>
+                            <option value="Selasar Keberangkatan Terminal 1A"></option>
+                            <option value="Selasar Keberangkatan Terminal 2"></option>
+                            <option value="Selasar Ruang Tunggu Terminal 1 B"></option>
+                            <option value="Selasar Terminal 1 Domestik"></option>
+                            <option value="Seluruh Area Terminal 2 Internasional"></option>
+                            <option value="Terminal Berlian"></option>
+                            <option value="Terminal GSN"></option>
+                            <option value="Terminal Gudang 100"></option>
+                            <option value="Terminal Jamrud Utara"></option>
+                            <option value="Terminal Kalimas"></option>
+                            <option value="Terminal Keberangkatan Terminal 2"></option>
+                            <option value="Terminal Kedatangan Terminal 1 B"></option>
+                            <option value="Terminal Mirah"></option>
+                            <option value="Terminal Nilam"></option>
+                            <option value="Terminal Penumpang Pelabuhan Pelindo"></option>
+                            <option value="Terminal Roro"></option>
+                        </datalist>
+                    </div>
+                    <div class="input-group">
+                        <label for="temuan">Temuan</label>
+                        <textarea id="temuan" name="temuan" class="textarea-field" rows="3"></textarea>
+                    </div>
+                    <div class="input-group">
+                        <label for="rekomendasi">Rekomendasi</label>
+                        <textarea id="rekomendasi" name="rekomendasi" class="textarea-field" rows="3"></textarea>
+                    </div>
+
+                    <div class="hasil-section">
+                        <div class="hasil-grid">
+                            <div>
+                                <div class="radio-group-label">Hasil IS Sarana</div>
+                                <div class="radio-wrapper">
+                                    <div class="radio-options">
+                                        <label><input type="radio" name="hasil_is_sarana" value="MS"> MS</label>
+                                        <label><input type="radio" name="hasil_is_sarana" value="TMS"> TMS</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="radio-group-label">Hasil Laboratorium</div>
+                                <div class="radio-wrapper">
+                                    <div class="radio-options">
+                                        <label><input type="radio" name="hasil_laboratorium" value="MS"> MS</label>
+                                        <label><input type="radio" name="hasil_laboratorium" value="TMS"> TMS</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="keterangan">Keterangan</label>
+                        <textarea id="keterangan" name="keterangan" class="textarea-field" rows="3"></textarea>
+                    </div>
+                    
+                    <button type="submit" class="submit-button">SIMPAN DATA</button>
+                </form>
+            </div>
+        </main>
+    </div>
+    <script>
+        window.addEventListener('DOMContentLoaded', () => {
+            const params = new URLSearchParams(window.location.search);
+            const wilayahDariURL = params.get('wilayah') || 'Wilayah Tidak Diketahui';
+            const tanggalDariURL = params.get('tanggal');
+
+            // Mengisi info box untuk tampilan
+            document.getElementById('display-wilayah').textContent = decodeURIComponent(wilayahDariURL);
+            
+            // ================== PERBAIKAN DI SINI ==================
+            // Mengisi nilai input tersembunyi yang akan dikirim ke database
+            document.getElementById('hidden-wilayah').value = decodeURIComponent(wilayahDariURL);
+            document.getElementById('hidden-tanggal').value = tanggalDariURL;
+            // =======================================================
+            
+            if (tanggalDariURL) {
+                 const dateObj = new Date(tanggalDariURL + 'T00:00:00');
+                 const day = String(dateObj.getDate()).padStart(2, '0');
+                 const month = String(dateObj.getMonth() + 1).padStart(2, '0');
+                 const year = dateObj.getFullYear();
+                 const formattedDate = `${day}/${month}/${year}`;
+                 document.getElementById('display-tanggal').textContent = formattedDate;
+            } else {
+                 document.getElementById('display-tanggal').textContent = 'Tanggal Belum Dipilih';
+            }
+        });
+    </script>
+</body>
+</html>
