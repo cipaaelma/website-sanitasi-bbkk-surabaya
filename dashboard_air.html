@@ -311,14 +311,18 @@ function attachHandlers(){
     fetchAirData();
   });
 
-  // 👉 Tombol Download Excel
+  //  Tombol Download Excel
   document.getElementById("downloadExcelBtn").addEventListener("click", () => {
-    const start = document.getElementById("start_date").value;
-    const end   = document.getElementById("end_date").value;
-    const wilayah = document.getElementById("wilayah_kerja").value;
-    const params = new URLSearchParams({ start_date: start, end_date: end, wilayah_kerja: wilayah });
-    window.open(`download_air_data.php?${params.toString()}`, "_blank");
-  });
+    const params = new URLSearchParams({
+        start_date: document.getElementById("start_date").value,
+        end_date: document.getElementById("end_date").value,
+        wilayah_kerja: document.getElementById("wilayah_kerja").value,
+        download: 1   // ← SESUAI dengan get_air_data.php milikmu
+    });
+
+    // PENTING: pake get_air_data.php, bukan download_air_data.php
+    window.open("get_air_data.php?" + params.toString(), "_blank");
+});
 }
 
 
